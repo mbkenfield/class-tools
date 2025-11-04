@@ -21,6 +21,7 @@ st.title("Enhanced Course Workload Estimator")
 st.markdown("""
 **Research & Design:** Betsy Barre | Allen Brown | Justin Esarey  
 [Click Here for Estimation Details](http://www.cte.rice.edu/workload#howcalculated)
+meow meow include proper CC attribution and any specific details or customizations for our classes 
 """)
 
 # Layout: 4 columns like the original
