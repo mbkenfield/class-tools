@@ -1,6 +1,14 @@
-
 import streamlit as st
 import numpy as np
+
+# Helper: map labels to indices (0-based)
+def idx(label, labels_list):
+    try:
+        return labels_list.index(label)
+    except ValueError:
+        return 0
+
+
 
 st.set_page_config(page_title="Enhanced Course Workload Estimator", layout="wide")
 
@@ -16,19 +24,31 @@ hoursperwriting = np.array([
     [[4.0, 2.5, 5.0], [3.0, 6.0, 4.0], [8.0, 5.0, 10.0]]
 ])  # shape (2,3,3)
 
-st.title("Enhanced Course Workload Estimator")
+st.title("Course Workload Estimator")
 
 st.markdown("""
-**Research & Design:** Betsy Barre | Allen Brown | Justin Esarey  
-[Click Here for Estimation Details](http://www.cte.rice.edu/workload#howcalculated)
-meow meow include proper CC attribution and any specific details or customizations for our classes 
-""")
+<div style="text-align: center; font-size: 16px; line-height: 1.6; border: 1px solid #cfcfcf">
+
+Course Workload Estimator - [revised by Mel Kenfield](http://linktr.ee/mbkenfield) for needs of TCC-Connect classes  
+Based on [Workload Estimator 2.0](https://cat.wfu.edu/resources/workload2/) 
+Original Research & Design by [Betsy Barre](https://cat.wfu.edu/about/our-team/), [Allen Brown](https://oe.wfu.edu/about/), and [Justin Esarey](http://www.justinesarey.com)  
+[For more details on workload estimation and research see Wake Forest University](http://www.cte.rice.edu/workload#howcalculated)
+
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
+    <img src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" alt="CC BY-NC-SA 4.0">
+  </a><br>
+  <span>Licensed under CC BY-NC-SA 4.0.</span>
+</div>
+""", unsafe_allow_html=True)
+
+
+
 
 # Layout: 4 columns like the original
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.subheader("COURSE INFO")
+    st.subheader("COURSE INFO") # Do I want to restrict values or make it a drop-down? 
     classweeks = st.number_input("Class Duration (Weeks):", value=15, min_value=1, step=1)
 
     st.subheader("READING ASSIGNMENTS")
@@ -41,11 +61,23 @@ with col1:
     readingpurpose = st.selectbox("Purpose:", readingpurpose_labels, index=0)
     setreadingrate = st.checkbox("manually adjust reading rate", value=False)
     overridepagesperhour = None
+        
+    # Determine pages per hour
+    if not setreadingrate:
+        pph = pagesperhour[idx(difficulty, difficulty_labels), idx(readingpurpose, readingpurpose_labels), idx(readingdensity, readingdensity_labels)]
+    else:
+        pph = float(overridepagesperhour) if overridepagesperhour is not None else 1.0
+    
+    st.write("Based on the parameters above, the estimated reading rate is", f"{pph} pages per hour")
     if setreadingrate:
         overridepagesperhour = st.number_input("Pages Read Per Hour:", value=10.0, min_value=0.0, step=1.0)
 
+    st.subheader("VIDEOS / PODCASTS")
+    weeklyvideos = st.number_input("Hours Per Week (videos/podcasts):", value=0.0, min_value=0.0, step=0.5)
+    
 with col2:
     st.subheader("WRITING ASSIGNMENTS")
+    st.markdown("This section estimates the time students spend writing assignments each week, based on page count, genre, and drafting requirements.")
     semesterpages = st.number_input("Pages Per Semester:", value=0, min_value=0)
     writtendensity_labels = ["250 Words (D-Spaced)", "500 Words (S-Spaced)"]
     writtendensity = st.selectbox("Page Density:", writtendensity_labels, index=0)
@@ -57,11 +89,7 @@ with col2:
     overridehoursperwriting = None
     if setwritingrate:
         overridehoursperwriting = st.number_input("Hours Per Written Page:", value=0.5, min_value=0.0, step=0.01)
-
-    st.subheader("VIDEOS / PODCASTS")
-    weeklyvideos = st.number_input("Hours Per Week (videos/podcasts):", value=0.0, min_value=0.0, step=0.5)
-
-with col3:
+        
     st.subheader("DISCUSSION POSTS")
     postsperweek = st.number_input("Posts per Week:", value=0, min_value=0, step=1)
     postformat_options = ["Text", "Audio/Video"]
@@ -72,14 +100,29 @@ with col3:
     overridediscussion = None
     if setdiscussion:
         overridediscussion = st.number_input("Hours Per Week (override):", value=1.0, min_value=0.0, step=0.1)
+        
+    
+with col3:
 
+    st.subheader("QUIZZES")
+    st.write("Quizzes assume no additional study time beyond other assigned reading.")
+    quizzes = st.number_input("Quizzes Per Semester:", value=0, min_value=0, step=1)    
+    quizminutes = st.number_input("Time Estimate Per Quiz(Minutes):", value=20, min_value=0, step=5)
+    quizhours = quizminutes / 60  # convert to hours for the workload calculation
+    
     st.subheader("EXAMS")
+    # Number of exams
     exams = st.number_input("Exams Per Semester:", value=0, min_value=0, step=1)
-    examhours = st.number_input("Study Hours Per Exam:", value=5.0, min_value=0.0, step=0.5)
-    takehome = st.checkbox("Take-Home Exams", value=False)
-    exam_length = None
-    if takehome:
-        exam_length = st.number_input("Exam Time Limit (Minutes):", value=60, min_value=0)
+    # Exam time in minutes
+    exam_length = st.number_input("Exam Time Limit (Minutes):", value=60, min_value=0, step=5)    
+    examstudyhours = st.number_input("Additional Study Hours Per Exam:", value=5.0, min_value=0.0, step=0.5)
+    # Proctored checkbox adds 15 minutes to the exam
+    proctored = st.checkbox("Proctored Exam - Add 15 minutes for VDI/Respondus", value=False)
+    if proctored:
+        exam_length += 15
+    # Convert total exam minutes to hours and add study hours
+    examhours = (exam_length / 60) + examstudyhours
+
 
 with col4:
     st.subheader("OTHER ASSIGNMENTS")
@@ -94,18 +137,6 @@ with col4:
     st.markdown("---")
     st.subheader("WORKLOAD ESTIMATES")
 
-# Helper: map labels to indices (0-based)
-def idx(label, labels_list):
-    try:
-        return labels_list.index(label)
-    except ValueError:
-        return 0
-
-# Determine pages per hour
-if not setreadingrate:
-    pph = pagesperhour[idx(difficulty, difficulty_labels), idx(readingpurpose, readingpurpose_labels), idx(readingdensity, readingdensity_labels)]
-else:
-    pph = float(overridepagesperhour) if overridepagesperhour is not None else 1.0
 
 # Determine hours per writing page
 if not setwritingrate:
@@ -135,8 +166,6 @@ if 'posthours_for_other' not in locals():
     else:
         posthours_for_other = (postlength_av * postsperweek) / 3.0
 
-# Take-home exam time in minutes per exam
-takehome_min = float(exam_length) if (takehome and exam_length is not None) else 0.0
 
 # Other assignments inclusion
 if not other_engage:
@@ -148,39 +177,38 @@ else:
 total_hours_per_week = round(
     (weeklypages / max(pph, 1e-6)) +
     ((hpw * semesterpages) / classweeks) +
+    ((quizzes * quizhours) / classweeks) +
     ((exams * examhours) / classweeks) +
     ((otherassign * otherhours) / classweeks) +
     (posthours) +
     (weeklyvideos) +
-    ((takehome_min / 60.0) * exams / classweeks) +
     ((syncsessions * synclength))
 , 2)
 
-independent_hours_per_week = round(
-    (weeklypages / max(pph, 1e-6)) +
-    ((hpw * semesterpages) / classweeks) +
-    ((exams * examhours) / classweeks) +
-    (weeklyvideos) +
-    (other_total_hours / classweeks) +
-    ((takehome_min / 60.0) * exams / classweeks)
-, 2)
+# independent_hours_per_week = round(
+ #   (weeklypages / max(pph, 1e-6)) +
+ #   ((hpw * semesterpages) / classweeks) +
+ #   ((quizzes * quizhours) / classweeks) +
+ #   ((exams * examhours) / classweeks) +
+ #   (weeklyvideos) +
+ #   (other_total_hours / classweeks) +
+ #   ((takehome_min / 60.0) * exams / classweeks)
+#, 2)
 
-contact_hours_per_week = round(
-    (posthours_for_other) +
-    ((syncsessions * synclength)) +
-    (other_total_hours / classweeks)
-, 2)
+#contact_hours_per_week = round(
+    #(posthours_for_other) +
+    #((syncsessions * synclength)) +
+    #(other_total_hours / classweeks)
+#, 2)
 
 # Display results in the right-hand column area
 with col4:
     st.markdown(f"**Total:** {total_hours_per_week} hrs/wk")
-    st.markdown(f"**Independent:** {independent_hours_per_week} hrs/wk")
-    st.markdown(f"**Contact:** {contact_hours_per_week} hrs/wk")
+#    st.markdown(f"**Independent:** {independent_hours_per_week} hrs/wk")
+#    st.markdown(f"**Contact:** {contact_hours_per_week} hrs/wk")
 
 # Additional small outputs
 st.markdown("---")
-st.write("Estimated Reading Rate:", f"{pph} pages per hour")
+
 st.write("Estimated Writing Rate:", f"{hpw} hours per page")
 
-st.markdown("---")
-st.write("Download source: (not included in this repo)")
