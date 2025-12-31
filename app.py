@@ -302,7 +302,7 @@ with col02:
 
 with col03:   
     st.subheader("Learning Commons")
-    st.info("Workshops; required scholarly sources for activities; others?")
+    st.info("Planned content: accounting for required workshops / tutoring visits; additional time calculation for library resources; anything else?")
        
 with col04:       
     st.subheader("Other Activities")
