@@ -369,9 +369,8 @@ with col01:
         examoutputtotal = 0
         examadministriviatotal = 0
 
-
-st.subheader("Presentations")
-st.info("What inputs and time estimates are appropriate here?")
+    st.subheader("Presentations")
+    st.info("What inputs and time estimates are appropriate here?")
 
 with col02:   
     st.subheader("Writing Assignments")
