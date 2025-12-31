@@ -72,7 +72,7 @@ st.markdown("""
     <br>
 </div>
     <div style="flex: 3; text-align: left; line-height: 1.6;">
-   A 3-credit hour course should contain 45-48 contact hours of instruction, depending on the format of the final exam(s). Students are expected to complete a significant amount of non-contact hour time for out-of-class student learning and reflection - <a href="https://www.ecfr.gov/current/title-34/part-600/section-600.2#p-600.2(Credit%20hour)">at a minimum, two additional hours of out-of-class student work.</a> <br><br> Time estimates are split based on input, analysis, output, and administrivia. Classes should be generally balanced with appropriate variation due to major assignments. <br><br> Use of Respondus LockDown Browser + Monitor adds a small amount of time to the "administrivia" category. Major assignments should use proper proctoring. Consider RSI strategies throughout. \n \nThis time estimator focuses on the student workload, not instructor presence or workload.
+   A 3-credit hour course should contain 45-48 contact hours of instruction, depending on the format of the final exam(s). Students are expected to complete a significant amount of non-contact hour time for out-of-class student learning and reflection - <a href="https://www.ecfr.gov/current/title-34/part-600/section-600.2#p-600.2(Credit%20hour)">at a minimum, two additional hours of out-of-class student work.</a> <br><br> Time estimates are split based on input, analysis, output, and administrivia. Classes should be generally balanced with appropriate variation due to major assignments.
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -589,17 +589,19 @@ st.markdown("""
     align-items: start;
 ">
     <div style="flex: 3; text-align: left; font-size: 14px; line-height: 1.6;">
-     Additional definitions/clarifications:
+     Additional definitions/clarifications/calculations:
      <ul>
-     <li>     Formative assessments are assumed to be non-proctored; open book, open notes. </li>
-     <li> other notes? </li> 
+     <li>Formative assessments are assumed to be non-proctored; open book, open notes. </li>
+     <li>Study/output calculations for writing assignments calculate 1/3 study, 2/3 output for reflective writing; 1/2 study, 1/2 output for argumentative writing; and 2/3 study, 1/3 output for research. </li>      
+     <li>Discussion posts seem inflated compared to typical student work? Difficult to assess due to lack of proctoring tools.</li> 
      </ul>
     </div>    
     <div style="flex: 3; text-align: left; font-size: 14px; line-height: 1.6;">
-    Additional calculation notes: 
+    Additional notes: 
     <ul>
-     <li>Study/output calculations for writing assignments calculate 1/3 study, 2/3 output for reflective writing; 1/2 study, 1/2 output for argumentative writing; and 2/3 study, 1/3 output for research. </li>      
-     <li>Discussion posts seem inflated compared to typical student work? Difficult to assess due to lack of proctoring tools.</li> 
+     <li>Adding additional study time to account for students needing to find high quality sources / library activities</li> 
+     <li>Considering what other types of assignments to include</li> 
+     <li>Balancing clarity/simplicity with customizability?</li> 
      </ul>    
     </div>
     <div style="flex: 3; text-align: left; font-size: 14px; line-height: 1.6;">
