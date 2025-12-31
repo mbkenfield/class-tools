@@ -63,6 +63,7 @@ st.markdown("""
     <li>Moderate (average readability; some new concepts) - 200 wpm</li>
     <li>Challenging (dense or archaic; many new concepts) - 100 wpm </li>
     </ul>
+    Reading rates need more review and possible revision based on current student skills. 
     <strong style="font-size: 16px;">Writing outputs</strong> 
     <ul>
     <li>Time estimates vary by genre (reflection, argument, or research) and revision expectations</li>
