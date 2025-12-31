@@ -369,6 +369,10 @@ with col01:
         examoutputtotal = 0
         examadministriviatotal = 0
 
+
+st.subheader("Presentations")
+st.info("What inputs and time estimates are appropriate here?")
+
 with col02:   
     st.subheader("Writing Assignments")
     st.markdown("This section estimates the time students spend writing assignments each week, based on page count, genre, and drafting requirements. ")
