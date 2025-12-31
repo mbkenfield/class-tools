@@ -65,9 +65,8 @@ st.markdown("""
     </ul>
     <strong style="font-size: 16px;">Writing outputs</strong> 
     <ul>
-    <li>Raw</li>
-    <li>Minimal drafting</li>
-    <li>Mandatory revise/resubmit - 2x multiplier</li>
+    <li>Time estimates vary by genre (reflection, argument, or research) and revision expectations</li>
+    <li>Coming soon: additional time estimator in "learning commons" section to communicate expectations for finding quality sources</li>
     </ul>
     <br>
 </div>
@@ -207,11 +206,14 @@ with col03:
     )
 
 
-    st.write("Study/review multiplier? Add additional study/review time. \n **Exams/assessments also calculate study/review time.** If using, explain why.")    
+    st.write("Study/review multiplier: if appropriate, add additional study/review time. \n **Exams/assessments already add some study/review time.**")    
 
     padding = st.number_input("Multiplier", value=1.0, min_value=1.0, step=0.1)      
     paddedinput = (semesterreading + semesterviewing) * padding
-
+    paddedweekly = paddedinput/classweeks
+    st.write(
+        f"Padded viewing/listening time: **{paddedweekly:.2f} hours per week**             "
+    )
     st.write(
         f"Padded viewing/listening time: **{paddedinput:.2f} hours per semester**             "
     )
