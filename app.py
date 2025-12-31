@@ -567,7 +567,7 @@ df["TOTAL"] = df.sum(axis=1)
 df.loc["TOTAL"] = df.sum(axis=0)
 st.dataframe(
     df.style.format("{:.2f}").apply(style_totals, axis=1), 
-    use_container_width=True, 
+    width="stretch", 
     height=int(35.2 * (len(df) + 1)) # This math helps it fit exactly to the row count
 )
 
