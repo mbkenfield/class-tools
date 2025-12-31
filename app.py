@@ -4,6 +4,33 @@ import pandas as pd
 
 st.set_page_config(page_title="Course Planning Tool", layout="wide")
 
+st.markdown(
+    """
+    <style>
+    /* New Streamlit versions use 'stMain' instead of 'stApp' for some backgrounds */
+    [data-testid="stAppViewContainer"] {
+        background-color: #f8fafc !important;
+    }
+
+    /* Target the new button class names */
+    .stElementContainer [data-testid="baseButton-secondary"] {
+        background-color: #2563eb !important;
+        color: white !important;
+        border-radius: 8px !important;
+    }
+
+    /* Target the container that holds the dataframe/table */
+    [data-testid="stTable"] {
+        background-color: white !important;
+        padding: 15px !important;
+        border-radius: 12px !important;
+        border: 1px solid #e2e8f0 !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Helper: map labels to indices (0-based) (I don't remember what this does)
 def idx(label, labels_list):
     try:
