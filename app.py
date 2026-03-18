@@ -35,47 +35,62 @@ st.title("Course Workload Estimator")
 #Top block of text 
 st.markdown("""
 <div style="
-    display: flex; 
-    gap: 20px; 
+        gap: 20px; 
     border: 1px solid #cfcfcf; 
     padding: 20px; 
     border-radius: 10px; 
     background-color: #f9f9f9;
     align-items: start;
 ">
+    
+<p>The course workload estimator is intended as a general guideline for balancing the expectations of distance education classes. Although classes will have variations in the types of assignments and room for instructor strengths and preferences, there are standard expectations for college credits that must be followed. A 3-credit hour course should contain 45-48 contact hours of instruction, depending on the format of the final exam(s). Students are expected to complete a significant amount of non-contact hour time for out-of-class student learning and reflection - <a href="https://www.ecfr.gov/current/title-34/part-600/section-600.2#p-600.2(Credit%20hour)">at a minimum, two additional hours of out-of-class student work.</a> A college-level class should have well over 100 hours of work expected. However, for a freshman-level class, expectations over 150 hours are both excessive and unrealistic.
+<br><br>Time estimates are split based on input, analysis/study, output, and administrivia. More information on these calculations available at the bottom of the page. These categories are somewhat flexible and are meant to be helpful, not constraining. In particular, students often fail to recognize the analytical element of studying; by considering this in your course planning, you can be better equipped to communicate this effectively to students. Classes should be generally balanced with appropriate variation due to major assignments. <br><br> 
+To use this tool, select your course length and enter the variables for your course design. When in doubt, make your best guess. The calculated numbers can be downloaded as a CSV. Use this to adjust your course planning. This tool is <em>not</em> currently tailored for instructor presence, instructor voice, or RSI. However, that should be part of the intentional course plan. 
 
-<div style="flex: 3; text-align: left; line-height: 1.6;">
-        <strong style="font-size: 16px;">Instructions</strong><br>
-        <ol><li>Select your course length.</li>
-        <li>Enter the variables for your course design.</li>
-        <li>Adjust your course plan to hit key targets.</li>     </ol>
+
+<div style="
+    display: flex; 
+    gap: 20px; 
+    padding: 20px; 
+    background-color: #f9f9f9;
+    align-items: start;
+">
+
+<div style="flex: 4; text-align: left; line-height: 1.2;">
         <strong style="font-size: 16px;">Inputs needed</strong><br>
         <ul>
         <li>Course length</li>
         <li>Modality; if synchronous, estimated time use</li>
-        <li>Estimated reading count (words)</li> 
-        <li>Number of quizzes, discussion boards, exams, and/or written assignments</li>
+        <li>Estimated reading count (words) and video/podcast expectations</li> 
+        <li>General plan for assignments (quizzes, discussions, etc.)</li>
+        <li>Expectations on communication skills assignments (essays, presentations) </li>
                 </ul>        
     </div>  
-    <div style="flex: 3;  margin: 0 10px;">
+    <div style="flex: 4;  margin: 0 10px; line-height: 1.2;">
     <strong style="font-size: 16px;">Reading inputs based on word count</strong>
     <ul>
     <li>Basic (survey/review)  - 300 words per minute</li>
     <li>Moderate (average readability; some new concepts) - 200 wpm</li>
     <li>Challenging (dense or archaic; many new concepts) - 100 wpm </li>
     </ul>
-    Reading rates need more review and possible revision based on current student skills. <br>
-    <strong style="font-size: 16px;">Writing outputs</strong> 
+     <br><br>   
+</div>
+    <div style="flex: 4; text-align: left; line-height: 1.2;">
+ <strong style="font-size: 16px;">Writing outputs</strong> 
     <ul>
-    <li>Time estimates vary by genre (reflection, argument, or research) and revision expectations</li>
-    <li>Coming soon: additional time estimator in "learning commons" section to communicate expectations for finding quality sources</li>
+    <li>Time estimates vary by genre - reflection, argument, or research.</li>
+    <li>Strongly suggested: use intentional revise/resubmit paper assignments as a class design strategy to build in instructor presence.</li>
     </ul>
-    <br>
-</div>
-    <div style="flex: 3; text-align: left; line-height: 1.6;">
-   A 3-credit hour course should contain 45-48 contact hours of instruction, depending on the format of the final exam(s). Students are expected to complete a significant amount of non-contact hour time for out-of-class student learning and reflection - <a href="https://www.ecfr.gov/current/title-34/part-600/section-600.2#p-600.2(Credit%20hour)">at a minimum, two additional hours of out-of-class student work.</a> <br><br> Time estimates are split based on input, analysis, output, and administrivia. Classes should be generally balanced with appropriate variation due to major assignments.
     </div>
-</div>
+     <div style="flex: 4; text-align: left; line-height: 1.2;">
+ <strong style="font-size: 16px;">Incomplete elements</strong> 
+    <ul>
+    <li>Need to include additional time estimator in "learning commons" section to communicate expectations for finding quality sources</li>
+    <li>Presentation calculations</li>
+    <li>Additional instructor input on grading comments/feedback</li>
+    </ul>
+    </div>
+</div></div>
 """, unsafe_allow_html=True)
 
     
@@ -115,7 +130,7 @@ with col01:
     
   # --- Option A: SHOW ONLY IF "7 Week" is NOT selected ---
     if "7 Week" not in length_option:
-        st.info("For classes with a synchronous element, the instructional balance can be adjusted between pure lecture (input) and activity (study/output) time.")
+        st.info("For classes with a synchronous element, the instructional balance can be adjusted between pure lecture (input) and activity (study/output) time. The input estimator currently does not fully account for this; instead the synchronous teaching time will add to the final estimate table.")
        
         
     # --- Show slider only for 7-week synchronous option ---
@@ -146,7 +161,7 @@ with col01:
  
 with col02: 
     st.subheader("Inputs - Reading")
-    st.write("Assumes consistent type of reading. OpenStax Sociology and Psychology typically 12,000-15,000 words per chapter.")
+    st.write("Assumes consistent type of reading. OpenStax Sociology and Psychology typically 10,000-12,000 words per chapter.")
     weeklywords = st.number_input(
         "Words Per Week:",
         value=12000,
@@ -199,13 +214,30 @@ with col03:
     semesterreading = readhours * classweeks
     semesterviewing = weeklyvideos * classweeks
 
-    st.write(
-        f"Estimated **semester** reading time: **{semesterreading:.2f} hours per semester**"             
-    )
+    st.markdown(f"""
+    Estimated **weekly** reading time: **{readhours:.2f} hours per week**  
+    Estimated **weekly** viewing/listening time: **{weeklyvideos:.2f} hours per week**  
 
-    st.write(
-        f"Estimated **semester** viewing/listening time: **{semesterviewing:.2f} hours per semester**             "
-    )
+    ---
+
+    Estimated **semester** reading time: **{semesterreading:.2f} hours per semester**  
+    Estimated **semester** viewing/listening time: **{semesterviewing:.2f} hours per semester**
+    """, unsafe_allow_html=True)
+
+    #st.write(
+#        f"Estimated **weekly** reading time: **{readhours:.2f} hours per week**"             
+    #)
+    #st.write(
+        #f"Estimated **weekly** viewing/listening time: **{weeklyvideos:.2f} hours per week**"             
+    #)
+    #st.markdown("---")
+    #st.write(
+        #f"Estimated **semester** reading time: **{semesterreading:.2f} hours per semester**"             
+    #)
+
+    #st.write(
+        #f"Estimated **semester** viewing/listening time: **{semesterviewing:.2f} hours per semester**             "
+    #)
 
 
     st.write("Study/review multiplier: if appropriate, add additional study/review time. \n **Exams/assessments already add some study/review time.**")    
@@ -214,10 +246,10 @@ with col03:
     paddedinput = (semesterreading + semesterviewing) * padding
     paddedweekly = paddedinput/classweeks
     st.write(
-        f"Padded viewing/listening time: **{paddedweekly:.2f} hours per week**             "
+        f"Padded input time: **{paddedweekly:.2f} hours per week**             "
     )
     st.write(
-        f"Padded viewing/listening time: **{paddedinput:.2f} hours per semester**             "
+        f"Padded input time: **{paddedinput:.2f} hours per semester**             "
     )
     
 st.header("Activities") 
@@ -339,7 +371,7 @@ col01, col02, col03, = st.columns(3, border=True)
 
 with col01:   
     st.subheader("Exams")
-    st.write("Exams are calculated as follows: ")   
+    st.write("Exam calculations include the time of the exam, the additional study time expected for exams, and a modifier for administrivia to account for the time students need to access proctoring tools.")   
     
     examnumb = st.number_input("Exams Per Semester:", value=0, min_value=0, step=1) # Number of exams
     
@@ -354,7 +386,7 @@ with col01:
         )
        
           # Proctored checkbox adds 10 minutes to the exam
-        examproctored = st.checkbox("Proctored Exam - Add 10 minutes for VDI/Respondus", value=True)
+        examproctored = st.checkbox("Proctored Exam - Add 10 minutes for VDI/Respondus", value=True, disabled=True)
         
         examadministriviatotal = ((10 if examproctored else 0)/60)*examnumb
                 
@@ -362,9 +394,11 @@ with col01:
         examoutputtotal = (exam_length_hrs * examnumb)  # Convert total exam time 
 
         examtotal = (exam_study * exam_length_hrs) + exam_length_hrs + ((10 if examproctored else 0)/60)
-
+        examtotalsem = examtotal * examnumb
+        
         st.write(f"Estimated time per exam: **{examtotal:.2f} hours per exam**")
-              
+        st.write(f"Estimated time per semester: **{examtotalsem:.2f} hours per semester**")        
+        
     else: 
         st.write("no exams planned; review for sufficient Respondus use on medium-stakes activities")
         examstudytotal = 0
@@ -594,34 +628,46 @@ st.markdown("""
     border-radius: 10px; 
     background-color: #f9f9f9;
     align-items: start;
+    margin-bottom: 20px
 ">
     <div style="flex: 3; text-align: left; font-size: 14px; line-height: 1.6;">
      Additional definitions/clarifications/calculations:
      <ul>
      <li>Formative assessments are assumed to be non-proctored; open book, open notes. </li>
-     <li>Study/output calculations for writing assignments calculate 1/3 study, 2/3 output for reflective writing; 1/2 study, 1/2 output for argumentative writing; and 2/3 study, 1/3 output for research. </li>      
+     <li>Summative assessments are assumed to be proctored; closed book, closed notes. </li>  
      <li>Discussion posts seem inflated compared to typical student work? Difficult to assess due to lack of proctoring tools.</li> 
      </ul>
     </div>    
     <div style="flex: 3; text-align: left; font-size: 14px; line-height: 1.6;">
-    Additional notes: 
+    Updates needed: 
     <ul>
      <li>Adding additional study time to account for students needing to find high quality sources / library activities</li> 
      <li>Considering what other types of assignments to include</li> 
      <li>Balancing clarity/simplicity with customizability?</li> 
+     <li>Not an RSI calculator , but should it be?</li> 
      </ul>    
     </div>
     <div style="flex: 3; text-align: left; font-size: 14px; line-height: 1.6;">
-        Course Workload Estimator - <a href="http://linktr.ee/mbkenfield" target="_blank">revised by Mel Kenfield</a> for TCC-Connect<br>
-        Based on <a href="https://cat.wfu.edu/resources/workload2/" target="_blank">Workload Estimator 2.0</a><br>
-        Research by <a href="https://cat.wfu.edu/about/our-team/" target="_blank">Betsy Barre</a>, <a href="https://orcid.org/0000-0002-7241-2288" target="_blank">Allen Brown</a>, and <a href="https://www.justinesarey.com/" target="_blank">Justin Esarey</a><br><br>
-        <a href="https://cat.wfu.edu/resources/workload/estimationdetails/" target="_blank">Details from Wake Forest University</a><br>    
-        <a href="https://cte.rice.edu/resources/workload-estimator" target="_blank">Additional information available from Rice University</a><br><br>
-        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
-            <img src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" alt="CC BY-NC-SA 4.0" style="width: 88px;">
-        </a><br>
-        <span style="font-size: 12px;">Licensed under CC BY-NC-SA 4.0.</span>
+     TCC board policy references a 50-minute classroom hour but it also not been updated since the key Distance Education and Innovation regulations, resulting in language that can be difficult to interpret regarding expectations of "direct instruction" as it relates to distance education. 
     </div>
+</div>
+<div style="
+    width: 100%;
+    border: 1px solid #cfcfcf;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #e8f0fe;
+    margin-bottom: 20px;
+">
+In the present calculation, study/output calculations for writing assignments calculate 1:2 study/output time for reflective writing; 1:1 study/output for argumentative writing; and 2:1 study/output for research-style papers. However, estimates for reading time and writing time are remarkably difficult. Even the use of time itself is a challenge: a student may spend two hours watching an assigned video but fail to do any of the cognitive work of <em>studying</em>. Much of the academic research uses students at prestigious universities who tend to have different study habits than do community college students. Self-reported time use cannot capture how focused that time was. Additionally, students have vastly different skill sets - the amount of time needed to locate quality sources in library resources will be significantly longer for those who have never had to use academic sources before.  <br><br>
+And yet, in spite of these difficulties, class design demands some meaningful metrics to promote consistency between classes and compliance with federal standards. That's why this is meant as an informative tool, not a strict formula. In considering balance, we also need to consider how the inputs and outputs relate. Assigning six hours of videos is meaningless if students are not assessed on learning the material. The regulator here is <em>rigor</em> - expecting college-level work from students. If students are not being held to appropriate standards, the time estimates on writing assignments are skewed. Research-based writing assignments turn into reflective assignments when the sources aren't checked; exams lose the need for study time when proctoring standards aren't upheld. This time estimator cannot capture all of these variables; it's just one piece in planning a well-designed course.<br><br> 
+
+Course Workload Estimator - <a href="http://linktr.ee/mbkenfield" target="_blank">revised by Mel Kenfield</a> for TCC-Connect<br>
+Based on <a href="https://cat.wfu.edu/resources/workload2/" target="_blank">Workload Estimator 2.0</a> with research by <a href="https://cat.wfu.edu/about/our-team/" target="_blank">Betsy Barre</a>, <a href="https://orcid.org/0000-0002-7241-2288" target="_blank">Allen Brown</a>, and <a href="https://www.justinesarey.com/" target="_blank">Justin Esarey</a>. Additional <a href="https://cat.wfu.edu/resources/workload/estimationdetails/" target="_blank">estimation details from Wake Forest University</a>. 
+
+<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" alt="CC BY-NC-SA 4.0" style="width: 88px;">
+<br>
+<span style="font-size: 12px;">Licensed under CC BY-NC-SA 4.0.</span>
 </div>
 """, unsafe_allow_html=True)
 
